@@ -39,6 +39,8 @@ export const Navbar = () => {
 
 	const isSubscribed = data?.subscribed;
 
+
+
 	return (
 		<header
 			className='sticky border-b-[1px] top-0 z-40 w-full  dark:border-b-slate-700 overflow-x-hidden

@@ -79,6 +79,30 @@ export async function POST(req: Request) {
 								data: { plan: "premium" },
 							});
 						} else {
+							let endDate = new Date();
+							endDate.setMonth(endDate.getMonth()); // 1 month from now
+							
+							await prisma.subscription.upsert({
+								where: { userId: user.id! },
+								create: {
+									userId: user.id,
+									startDate: new Date(),
+									endDate: endDate,
+									plan: "premium",
+									period: "monthly",
+								},
+								update: {
+									plan: "premium",
+									period: "monthly",
+									startDate: new Date(),
+									endDate: endDate,
+								},
+							});
+
+							await prisma.user.update({
+								where: { id: user.id },
+								data: { plan: "premium" },
+							});
 							// one_time_purchase
 						}
 					}

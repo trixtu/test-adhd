@@ -7,6 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  USER
+}
+
 enum Plan {
   free
   premium
@@ -17,18 +22,66 @@ enum SubscriptionPeriod {
   yearly
 }
 
+model Product {
+  id                     String   @id @default(cuid()) @map("_id")
+  name                   String
+  priceInCents           Int
+  filePath               String
+  imagePath              String
+  description            String
+  isAvailableForPurchase Boolean  @default(true)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  orders                 Order[]
+
+  DownloadVerification DownloadVerification[]
+}
+
+model TestADHD {
+  id                    String @id @default(cuid()) @map("_id")
+  name                  String @default("Test ADHD")
+  totalScore            Int?
+  totalMaxScore         Int?
+  inattentionScore      Int?
+  inattentionMaxScore   Int?
+  hyperactivityScore    Int?
+  hyperactivityMaxScore Int?
+  priceInCents          Int
+
+  isAvailableForPurchase Boolean  @default(false)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+  orders                 Order[]
+}
+
 model User {
   id         String  @id @default(cuid()) @map("_id")
   email      String  @unique
   name       String?
   image      String?
   plan       Plan    @default(free)
-  customerId String? @unique // Stripe customer ID, this will be important when we need to delete the subscription
+  role       Role    @default(USER)
+  customerId String? @unique @default(cuid())
 
   Subscription Subscription?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  orders    Order[]
+}
+
+model Order {
+  id               String   @id @default(cuid()) @map("_id")
+  pricePaidInCents Int
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  userId     String
+  productId  String?
+  testADHDId String?
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product    Product?  @relation(fields: [productId], references: [id], onDelete: Restrict)
+  testADHD   TestADHD? @relation(fields: [testADHDId], references: [id], onDelete: Restrict)
 }
 
 model Subscription {
@@ -43,5 +96,13 @@ model Subscription {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  User User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+}
+
+model DownloadVerification {
+  id        String   @id @default(cuid()) @map("_id")
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
