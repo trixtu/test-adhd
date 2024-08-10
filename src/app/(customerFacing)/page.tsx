@@ -25,7 +25,7 @@ const getNewestProducts = cache(() => {
     orderBy: { createdAt: "desc" },
     take: 6,
   })
-}, ["/", "getNewestProducts"])
+}, ["/", "getNewestProducts"])  
 
 export default function HomePage() {
   return (
