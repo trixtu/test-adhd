@@ -2,7 +2,6 @@ import { ProductCard, ProductCardSkeleton } from "@/components/ProductCard";
 import prisma from "@/db/prisma";
 import { cache } from "@/lib/cache";
 import { Suspense } from "react";
-import { any } from "zod";
 
 const getProducts = cache(() => {
   return prisma.product.findMany({
