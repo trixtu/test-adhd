@@ -45,9 +45,9 @@ export const Navbar = () => {
           </NavigationMenuItem>
 
           <div className=" md:flex gap-2">
-            <ModeToggle />
+            <ModeToggle /> 
           </div>
-        </NavigationMenuList>
+        </NavigationMenuList>   
       </NavigationMenu>
     </header>
   );
