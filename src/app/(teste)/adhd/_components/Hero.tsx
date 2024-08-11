@@ -2,8 +2,11 @@ import Image from "next/image";
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import prisma from "@/db/prisma";
 
-export const Hero = () => {
+export const Hero = async () => {
+  const orders = await prisma.order.findMany();
+  const people = orders.length + 668
   return (
     <div className="hero-section">
       <main className="text-5xl md:text-7xl font-bold text-balance">
@@ -14,7 +17,7 @@ export const Hero = () => {
                 <div className="w-2 h-2 bg-green-600 rounded-full"></div>
               </div>
               <div className="flex space-x-1 text-xs sm:text-sm">
-                <p className="font-medium">665</p>
+                <p className="font-medium">{people}</p>
                 <p>people currently taking the test</p>
               </div>
             </div>

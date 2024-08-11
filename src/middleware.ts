@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { isValidPassword } from "./lib/isValidPassword"
 
 export async function middleware(req: NextRequest) {
+  const { pathname } = req.nextUrl;
 
    // Verificare pentru ruta "/webhooks/adhd"
    if (req.nextUrl.pathname.startsWith("/webhooks/adhd")) {
@@ -15,8 +16,8 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();  
   }
 
-
   if ((await isAuthenticated(req)) === false) {
+
     return new NextResponse("Unauthorized", {
       status: 401,
       headers: { "WWW-Authenticate": "Basic" },
@@ -44,10 +45,15 @@ async function isAuthenticated(req: NextRequest) {
 
     ))
   )
+}
 
-
+// Funcție pentru validarea token-ului (poate fi ajustată în funcție de implementarea ta)
+ function isValidToken(token: string): boolean {
+  // Adaugă logica ta pentru validarea token-ului aici
+  // De exemplu, verifică dacă token-ul este valid și nu a expirat
+  return token === process.env.VALID_TOKEN; // Exemplar, ajustează după necesități
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/webhooks/adhd"],
+  matcher: ["/admin/:path*", "/webhooks/adhd", "/logout"],
 }
