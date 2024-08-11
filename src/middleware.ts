@@ -2,6 +2,19 @@ import { NextRequest, NextResponse } from "next/server"
 import { isValidPassword } from "./lib/isValidPassword"
 
 export async function middleware(req: NextRequest) {
+
+   // Verificare pentru ruta "/webhooks/adhd"
+   if (req.nextUrl.pathname.startsWith("/webhooks/adhd")) {
+    const res = NextResponse.next();
+
+      res.headers.set('Access-Control-Allow-Origin', '*');
+      res.headers.set('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+      res.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+      
+    return res;
+  }
+
+
   if ((await isAuthenticated(req)) === false) {
     return new NextResponse("Unauthorized", {
       status: 401,
@@ -35,5 +48,5 @@ async function isAuthenticated(req: NextRequest) {
 }
 
 export const config = {
-  matcher: "/admin/:path*",
+  matcher: ["/admin/:path*", "/webhooks/adhd"],
 }
