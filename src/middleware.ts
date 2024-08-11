@@ -5,13 +5,14 @@ export async function middleware(req: NextRequest) {
 
    // Verificare pentru ruta "/webhooks/adhd"
    if (req.nextUrl.pathname.startsWith("/webhooks/adhd")) {
+    
     const res = NextResponse.next();
 
-      res.headers.set('Access-Control-Allow-Origin', '*');
-      res.headers.set('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-      res.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+      NextResponse.next().headers.set('Access-Control-Allow-Origin', '*');
+      NextResponse.next().headers.set('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+      NextResponse.next().headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
       
-    return res;  
+    return NextResponse.next();  
   }
 
 
