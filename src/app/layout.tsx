@@ -29,6 +29,7 @@ export default function RootLayout({
         >
           <TanStackProvider>
             <SmothScroll>{children}</SmothScroll>
+            <p>footer</p>
           </TanStackProvider>
         </ThemeProvider>
       </body>
