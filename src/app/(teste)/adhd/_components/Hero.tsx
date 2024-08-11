@@ -6,7 +6,7 @@ import prisma from "@/db/prisma";
 
 export const Hero = async () => {
   const orders = await prisma.order.findMany();
-  const people = orders.length + 668
+  const people = orders.length + 668 
   return (
     <div className="hero-section">
       <main className="text-5xl md:text-7xl font-bold text-balance">
