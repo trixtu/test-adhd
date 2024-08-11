@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   const event = stripe.webhooks.constructEvent(
     await req.text(),
     req.headers.get("stripe-signature") as string,
-    process.env.STRIPE_WEBHOOK_SECRET as string
+    process.env.STRIPE_WEBHOOK_SECRET as string 
   );
 
   if (event.type === "charge.succeeded") {
